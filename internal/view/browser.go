@@ -196,6 +196,17 @@ func (b *Browser) Aliases() []string {
 	return append(b.meta.ShortNames, b.meta.SingularName, b.meta.Name)
 }
 
+// FullResourceName returns the resource name in the form <name>.<group>
+func (b *Browser) FullResourceName() string {
+	fullName := b.meta.Name
+
+	if len(b.meta.Group) > 0 {
+		fullName += "." + b.meta.Group
+	}
+
+	return fullName
+}
+
 // ----------------------------------------------------------------------------
 // Model Protocol...
 
@@ -348,7 +359,7 @@ func (b *Browser) editCmd(evt *tcell.EventKey) *tcell.EventKey {
 	{
 		args := make([]string, 0, 10)
 		args = append(args, "edit")
-		args = append(args, b.meta.SingularName)
+		args = append(args, b.FullResourceName())
 		if ns != client.AllNamespaces {
 			args = append(args, "-n", ns)
 		}
